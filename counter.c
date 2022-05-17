@@ -19,7 +19,7 @@ void counter(uint32_t min, uint32_t sec )//13:45
 					LCD_Write_Char(':'); 
 					LCD_Write_Char(b);
 				}	
-			else if (((GPIO_PORTF_DATA_R&0x10)==0x00)| ((GPIO_PORTA_DATA_R&0x40)==0x00))//sw1 on or door is open
+			else if (((GPIO_PORTF_DATA_R&0x10)==0x00)| ((GPIO_PORTA_DATA_R&0x04)==0x00))//sw1 on or door is open
 				{
 					Pause(); 
 				}
@@ -31,7 +31,7 @@ void counter(uint32_t min, uint32_t sec )//13:45
 //******************************************//
 void Pause()
 {
-	while(GPIO_PORTF_DATA_R&0x01==0x01 & GPIO_PORTA_DATA_R & 0X40==0x00 ){//true when sw2 off and
+	while(GPIO_PORTF_DATA_R&0x01==0x01 & GPIO_PORTA_DATA_R & 0X04==0x00 ){//true when sw2 off and
 		GPIO_PORTF_DATA_R &= 0x11;
 		delay_ms(500);
 		GPIO_PORTF_DATA_R |=0x1F;
