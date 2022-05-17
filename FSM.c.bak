@@ -1,4 +1,8 @@
 #include <C:\Keil\Labware\tm4c123gh6pm.h>
+#define SW1 0x10
+#define SW2 0x01
+#define SW3 //to be adjusted
+//Define keypad header here, can't do this because the location will change on whoever will assemble the whole project
 typedef enum
 {
 	IDLE,
@@ -14,7 +18,6 @@ void MicrowaveStateMachine(){
 	char keypadIn = keypad_scan();
 	int state = IDLE; //initial state
 	int pause = 0;
-	int cooking_time_in_minutes;
 	while(1){
 		switch(state){
 			IDLE:
@@ -30,9 +33,9 @@ void MicrowaveStateMachine(){
 						if(keypadIn == 'D'){
 							state = DATA_ENTRY;
 						}
-						if((GPIO_PORTA_DATA_R & 0X08) == 0X00){
-							state = IDLE;
-						}
+			      //if(SW3 == 0){ e.g: on
+						//	state = IDLE;
+						//}
 						break;
 			COOKS:
 						if(GPIO_PORTF_DATA_R == SW1){
@@ -41,10 +44,9 @@ void MicrowaveStateMachine(){
 						if(CookingDone == 1){
 							state = IDLE;
 						}
-						if((GPIO_PORTA_DATA_R & 0X08) == 0X00){
-						state = PAUSE;
+						//if(SW3 == 0){ SW3 Pressed
+						//state = PAUSE;
 						break;
-						}
 			 DATA_ENTRY:
 					  if(keypadIn == 'B' | keypadIn == 'C'){
 							if(keypadIn <= 1 || keypadIn >= 9){
@@ -52,11 +54,8 @@ void MicrowaveStateMachine(){
 							}
 						}
 						if(keypadIn == 'D'){
-							if(cooking_time_in_minutes<=1 || cooking_time_in_minutes >= 30){
-							state = DATA_ENTRY;}
-							else{
-								state = COOKS;
-							}
+							//if reload time less than 1 or greater than 30
+							state = DATA_ENTRY; //to be adjusted
 						}
 						if(keypadIn == 'B' && GPIO_PORTF_DATA_R == SW2){
 						state = COOKS;
@@ -69,7 +68,7 @@ void MicrowaveStateMachine(){
 						}
 						break;
 				PAUSE:
-						if(GPIO_PORTF_DATA_R == SW2 | &&  (GPIO_PORTA_DATA_R&0X08) ==  0X08){
+						if(GPIO_PORTF_DATA_R == SW2 | SW3 == High){ //to be adjusted
 						state = COOKS;
 						}
 						if(GPIO_PORTF_DATA_R == SW1){
