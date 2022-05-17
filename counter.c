@@ -1,4 +1,4 @@
-//--------counter_NABIL--------//
+//---------counter_NABIL---------//
 void counter(uint32_t min, uint32_t sec )//13:45
 {
 	unsigned long i, j;// i for min , j for sec
