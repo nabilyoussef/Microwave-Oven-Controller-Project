@@ -18,9 +18,10 @@ int main()
 	mainScreen:
 	// Init section
 	SystemInit();
-	LCD_init(void);
-	keypad_Init(void);
-	SW3Init (void);
+	LCD_init();
+	keypad_Init();
+	SW3Init ();
+	//buzzer
 	while(1){
 		keypadIn = keypad_getkey();
 		LCD_Write_Char(keypadIn);
