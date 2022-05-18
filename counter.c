@@ -21,7 +21,20 @@ void counter(uint32_t min, uint32_t sec )//13:45
 				}	
 			else if (((GPIO_PORTF_DATA_R&0x10)==0x00)| ((GPIO_PORTA_DATA_R&0x04)==0x00))//sw1 on or door is open
 				{
-					Pause(); 
+					delay_ms(300);
+					while((GPIO_PORTF_DATA_R&0x01)==0x01 & (GPIO_PORTA_DATA_R & 0X04)==0x00 ){//true when sw2 off and
+						GPIO_PORTF_DATA_R &= 0x11;//off leds
+						delay_ms(300);
+						GPIO_PORTF_DATA_R |=0x1F;//on leds
+						delay_ms(300);
+						if(((GPIO_PORTF_DATA_R&0x01)==0x01))//sw1 on gives true and end this counter
+						{
+							delay_ms(300);
+							i=min;
+							j=59; //to end couneter
+							break;
+						}
+	} 
 				}
 
 		}
@@ -29,16 +42,3 @@ void counter(uint32_t min, uint32_t sec )//13:45
 	}
 }
 //******************************************//
-void Pause()
-{
-	while(GPIO_PORTF_DATA_R&0x01==0x01 & GPIO_PORTA_DATA_R & 0X04==0x00 ){//true when sw2 off and
-		GPIO_PORTF_DATA_R &= 0x11;
-		delay_ms(500);
-		GPIO_PORTF_DATA_R |=0x1F;
-		delay_ms(500);
-		if(((GPIO_PORTF_DATA_R&0x01)==0x01))//sw1 on gives true and end this counter
-		{
-			goto mainScreen; //to end couneter
-		}
-	}
-}
