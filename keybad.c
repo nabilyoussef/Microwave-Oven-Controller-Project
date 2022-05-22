@@ -14,18 +14,20 @@ unsigned  char symbol[RowsSize][ColsSize] = {{ '1', '2',  '3', 'A'},
 
 unsigned char keypad_scan(void)
 {
+	 int i,j;
   while(1)
   {
-volatile int i,j;
     for(i = 0; i < 4; i++)    //Scan columns loop
     {
-      GPIO_PORTC_DATA_R = (1 << (i+4));
+      GPIO_PORTC_DATA_R = (1U << (i+4));
       delayUs(2);
       for(j = 0; j < 4; j++)  //Scan rows
       {
-        if((GPIO_PORTE_DATA_R & 0x0f) & (1 << (j+1)))
+        if((GPIO_PORTE_DATA_R & 0x0F) & (1U << j))
           return symbol[j][i];
       }
     }
   }
 }
+
+

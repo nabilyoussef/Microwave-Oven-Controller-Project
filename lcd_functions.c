@@ -75,14 +75,13 @@ void LCD4bits_Init(void)
 
 void LCD_Timer(int minute , int second)
 {
-int i , j;
-
+int i , j, k, m;
 for(i = minute; i>=0; i--)
 {
 for(j = second; j>=0; j--)
 {
-	if ((GPIO_PORTF_DATA_R&0x10)==0x10)// sw1 is off
-	{
+		LEDS_ON();
+	
 		LCD4bits_Data((i/10)+'0');// Send ten's of minutes
  
 
@@ -93,39 +92,30 @@ for(j = second; j>=0; j--)
 
 
 		LCD4bits_Data((j/10)+'0'); // Send ten's of seconds
-
+		
 
 		LCD4bits_Data((j%10)+'0'); // Send unit's of seconds
-		delay(100); //wait 1 sec
-		LCD4bits_Cmd(clear_display);
-	}
-	else if (((GPIO_PORTF_DATA_R&0x10)==0x01)||((GPIO_PORTA_DATA_R&0x08)==0x00))//sw1 on or door is open
+		while(SW3_Input()==0){}
+		k = check_and_delay(1000);
+		if(k==1)
+		{
+			m=pause();
+			if(m==1)
 				{
-					while(1){//true when sw2 off and
-		GPIO_PORTF_DATA_R &= 0x11;
-		delay(500);
-		GPIO_PORTF_DATA_R |=0x1F;
-		delay(500);
-		if((SW1_Input()==0x01))//sw1 on gives true and end this counter
-		{
-			i=-1;
-			j=-1;			//to end couneter
-		}
-		else if(SW2_Input()!=0x10&&SW3_Input()!=0x00)
-		{
-			break;
-		}
-	} 
+					return;
 				}
-		
- 
-//while(sw3==0){}
+			if(m==2)
+				{
+					continue;	
+				}
+		}
+		LCD4bits_Cmd(clear_display);
 }
 second = 59; // min become 59sec after 1sec
-
+}
 }
 	
-}
+
 
 void dec_cursor(int i){
 	int j;
