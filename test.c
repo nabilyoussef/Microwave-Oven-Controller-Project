@@ -2,7 +2,7 @@
 #define EN 0x04  		 	 	//EN -> PB2 (0x04)
 #define lcd_clear 0x01
 #include "tm4c123gh6pm.h"
- 
+ //----test----//
  void PortC_init(void){        // columns
 	SYSCTL_RCGCGPIO_R |= 0x04;
 	while((SYSCTL_PRGPIO_R &= 0x04) == 0);
