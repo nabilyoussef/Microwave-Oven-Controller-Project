@@ -95,8 +95,8 @@ for(j = second; j>=0; j--)
 		
 
 		LCD4bits_Data((j%10)+'0'); // Send unit's of seconds
-		while(SW3_Input()==0){}
-		k = check_and_delay(1000);
+		while(SW3_Input()==0){} //check door
+		k = check_and_delay(1000); //check for pause, start and cancel
 		if(k==1)
 		{
 			m=pause();
