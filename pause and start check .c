@@ -16,11 +16,7 @@ int check_and_delay(int t)
         {
             indication = 2;
         }
-        if(SW3_Input() == 0) // PA3 (Door is open) 
-        {
-            indication = 3;
-        }
-
+       
     }
     return indication;
 }
